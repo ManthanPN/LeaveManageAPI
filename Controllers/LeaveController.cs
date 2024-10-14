@@ -59,8 +59,8 @@ namespace LeaveManageAPI.Controllers
                 return BadRequest("Invalid employee data.");
             }
 
-            // Set the default status to "Pending" if not provided
-            leave.Status = "Pending";
+            
+            leave.Status = "pending";
 
             _context.leave.Add(leave);
             await _context.SaveChangesAsync();

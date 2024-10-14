@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace LeaveManageAPI.Controllers
 {
@@ -61,10 +62,21 @@ namespace LeaveManageAPI.Controllers
                 employee.LeaveDays = 26;
             }
 
+            // Adding email and birthdate during registration
+            if (!string.IsNullOrEmpty(employee.Email))
+            {
+                employee.Email = employee.Email;
+            }
+
+            if (!string.IsNullOrEmpty(employee.Birthdate))
+            {
+                employee.Birthdate = employee.Birthdate;
+            }
+
             _context.register.Add(employee);
             await _context.SaveChangesAsync();
 
-            return Ok("Registration successful.");
+            return Ok(employee);
         }
 
         [HttpPost("Login")]
@@ -101,6 +113,42 @@ namespace LeaveManageAPI.Controllers
             var roles = new[] { "Employee", "Manager" };
             return Ok(roles);
         }
+
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel updateUserModel)
+        {
+            if (updateUserModel == null || string.IsNullOrEmpty(updateUserModel.Username))
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            var user = await _context.register.FirstOrDefaultAsync(u => u.Id == updateUserModel.Id);
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            // Update fields
+            user.Username = updateUserModel.Username;
+            user.Password = updateUserModel.Password;
+
+            if (!string.IsNullOrEmpty(updateUserModel.Email))
+            {
+                user.Email = updateUserModel.Email;
+            }
+
+            if (!string.IsNullOrEmpty(updateUserModel.Birthdate))
+            {
+                user.Birthdate = updateUserModel.Birthdate;
+            }
+
+            _context.register.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(user);
+        }
+
 
     }
 }

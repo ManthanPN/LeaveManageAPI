@@ -9,5 +9,6 @@ namespace LeaveManageAPI.Model
         public leaveDBContext(DbContextOptions options) : base(options) {}
         public DbSet<LeaveApplication> leave { get; set; }
         public DbSet<RegsiterModel> register { get; set; }
+        /*public DbSet<UpdateUserModel> update { get; set; }*/
     }
 }

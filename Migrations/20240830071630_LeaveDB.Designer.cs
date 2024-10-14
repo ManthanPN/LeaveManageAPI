@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeaveManageAPI.Migrations
 {
     [DbContext(typeof(leaveDBContext))]
-    [Migration("20240731103417_LeaveDB")]
+    [Migration("20240830071630_LeaveDB")]
     partial class LeaveDB
     {
         /// <inheritdoc />
@@ -71,6 +71,12 @@ namespace LeaveManageAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Birthdate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LeaveDays")
                         .HasColumnType("int");
