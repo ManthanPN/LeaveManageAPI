@@ -20,7 +20,7 @@ namespace LeaveManageAPI.Controllers
         [HttpGet("GetLeaveTypes")]
         public IActionResult GetLeaveTypes()
         {
-            var types = new[] { "Annual Leave", "Sick Leave", "Public Holiday", "Paid Leave", "Casual Leave" };
+            var types = new[] { "Annual Leave", "Sick Leave", "Paid Leave", "Casual Leave" };
             return Ok(types);
         }
 
