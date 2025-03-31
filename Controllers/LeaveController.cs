@@ -52,6 +52,7 @@ namespace LeaveManageAPI.Controllers
                 string.IsNullOrEmpty(leave.StartDate) ||
                 string.IsNullOrEmpty(leave.EndDate) ||
                 string.IsNullOrEmpty(leave.Reason) ||
+                string.IsNullOrEmpty(leave.Team) ||
                 string.IsNullOrEmpty(leave.TypeLeave) ||
                 string.IsNullOrEmpty(leave.LeaveDuration)
                 )

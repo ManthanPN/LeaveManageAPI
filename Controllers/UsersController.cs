@@ -44,6 +44,7 @@ namespace LeaveManageAPI.Controllers
                         e.Username,
                         e.Password,
                         e.Role,
+                        e.Team,
                         e.LeaveDays,
                         Email = e.Email ?? "N/A",
                         Birthdate = e.Birthdate ?? "N/A"
@@ -58,7 +59,7 @@ namespace LeaveManageAPI.Controllers
                 return Ok(new { employees });
             }
             catch (Exception ex)
-            {
+            { 
                 return StatusCode(500, new { message = "An error occurred while fetching employees.", error = ex.Message });
             }
         }
@@ -78,6 +79,7 @@ namespace LeaveManageAPI.Controllers
                         e.Username,
                         e.Password,
                         e.Role,
+                        e.Team,
                         e.LeaveDays,
                         Email = e.Email ?? "N/A",
                         Birthdate = e.Birthdate ?? "N/A"
@@ -96,13 +98,14 @@ namespace LeaveManageAPI.Controllers
                 return StatusCode(500, new { message = "An error occurred while fetching the user.", error = ex.Message });
             }
         }
+
         [AllowAnonymous]
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel employee)
         {
             if (employee == null || string.IsNullOrEmpty(employee.Username) ||
-                string.IsNullOrEmpty(employee.Password) || string.IsNullOrEmpty(employee.Role))
+                string.IsNullOrEmpty(employee.Password) || string.IsNullOrEmpty(employee.Role) || string.IsNullOrEmpty(employee.Team))
             {
                 return BadRequest("Invalid employee data.");
             }
@@ -161,7 +164,7 @@ namespace LeaveManageAPI.Controllers
                  new Claim(JwtRegisteredClaimNames.Sub, _config["Jwt:Subject"]),
                  new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                  new Claim(ClaimTypes.Role, employee.Role),
-                 new Claim("Id", employee.Id.ToString())
+                 new Claim("Id", employee.Id.ToString()),
              };
 
              var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -182,10 +185,12 @@ namespace LeaveManageAPI.Controllers
                  {
                      employee.Id,
                      employee.Username,
-                     employee.Role
+                     employee.Role,
+                     employee.Team
                  }
              });
         }
+
         [AllowAnonymous]
         [HttpPost]
         [Route("logout")]
@@ -201,8 +206,17 @@ namespace LeaveManageAPI.Controllers
         [Route("roles")]
         public IActionResult GetRoles()
         {
-            var roles = new[] { "Employee", "Manager" };
+            var roles = new[] { "Employee", "Team Leader", "Manager"};
             return Ok(roles);
+        } 
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetTeams")]
+        public IActionResult GetTeams()
+        {
+            var teams = new[] { "Angular", "Dotnet" };
+            return Ok(teams);
         }
 
         [HttpPut]
@@ -216,7 +230,7 @@ namespace LeaveManageAPI.Controllers
 
             var user = await _context.register.FirstOrDefaultAsync(u => u.Id == updateUserModel.Id);
 
-            if (user == null)
+            if (user == null) 
             {
                 return NotFound("User not found.");
             }
@@ -295,7 +309,7 @@ namespace LeaveManageAPI.Controllers
             }
 
             user.Password = req.NewPassword;
-            await _context.SaveChangesAsync();
+            int v = await _context.SaveChangesAsync();
 
             return Ok(new { message = "Password reset successfully." , user.Password});
         }

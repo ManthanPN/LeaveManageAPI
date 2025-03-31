@@ -20,6 +20,7 @@ namespace LeaveManageAPI.Migrations
                     StartDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EndDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Team = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TypeLeave = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LeaveDuration = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -38,8 +39,9 @@ namespace LeaveManageAPI.Migrations
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Team = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LeaveDays = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Birthdate = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
