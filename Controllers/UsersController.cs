@@ -309,7 +309,7 @@ namespace LeaveManageAPI.Controllers
             }
 
             user.Password = req.NewPassword;
-            int v = await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return Ok(new { message = "Password reset successfully." , user.Password});
         }
