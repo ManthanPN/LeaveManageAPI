@@ -219,6 +219,7 @@ namespace LeaveManageAPI.Controllers
             return Ok(teams);
         }
 
+        [AllowAnonymous]
         [HttpPut]
         [Route("UpdateUser")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel updateUserModel)
@@ -248,10 +249,8 @@ namespace LeaveManageAPI.Controllers
             {
                 user.Birthdate = updateUserModel.Birthdate;
             }
-
             _context.register.Update(user);
             await _context.SaveChangesAsync();
-
             return Ok(user);
         }
 
